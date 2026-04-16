@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اختبار الاضطرابات النمائية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --gold-dim: rgba(201,168,76,0.12);
+    --teal: #2dd4bf;
+    --teal-dim: rgba(45,212,191,0.1);
+    --red: #f87171;
+    --red-dim: rgba(248,113,113,0.1);
+    --green: #4ade80;
+    --green-dim: rgba(74,222,128,0.1);
+    --text: #f0f0f0;
+    --text2: #a0a8c0;
+    --text3: #606880;
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1rem 4rem;
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(201,168,76,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(45,212,191,0.04) 0%, transparent 50%);
+  }
+
+  .container {
+    width: 100%;
+    max-width: 780px;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    padding: 2.5rem 0 2rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+  .header-icon {
+    width: 56px; height: 56px;
+    background: var(--gold-dim);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 26px;
+  }
+  .header h1 {
+    font-family: 'Amiri', serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  .header p {
+    color: var(--text2);
+    font-size: 0.9rem;
+    margin-top: 0.4rem;
+  }
+  .meta-row {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1.25rem;
+  }
+  .meta-pill {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 0.8rem;
+    color: var(--text2);
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    padding: 5px 14px;
+    border-radius: 20px;
+  }
+  .meta-pill span { color: var(--gold); font-weight: 600; }
+
+  /* PROGRESS */
+  .progress-wrap { margin-bottom: 1.75rem; }
+  .progress-top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 8px;
+  }
+  .progress-label { font-size: 0.8rem; color: var(--text3); }
+  .progress-count { font-size: 0.8rem; color: var(--gold); font-weight: 600; }
+  .progress-track {
+    height: 4px;
+    background: var(--surface2);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 99px;
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* CARD */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    margin-bottom: 1rem;
+    animation: fadeUp 0.35s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .badge-row { margin-bottom: 1rem; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 4px 10px;
+    border-radius: 6px;
+    text-transform: uppercase;
+  }
+  .badge-diag { background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid rgba(201,168,76,0.25); }
+  .badge-dsm { background: rgba(147,112,219,0.15); color: #b99dff; border: 1px solid rgba(147,112,219,0.25); }
+  .badge-diff { background: rgba(251,146,60,0.12); color: #fb9a4b; border: 1px solid rgba(251,146,60,0.22); }
+  .badge-assess { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(45,212,191,0.2); }
+  .badge-adhd { background: rgba(248,113,113,0.12); color: #fca5a5; border: 1px solid rgba(248,113,113,0.22); }
+  .badge-family { background: rgba(167,243,208,0.1); color: #6ee7b7; border: 1px solid rgba(167,243,208,0.2); }
+  .badge-id { background: rgba(129,140,248,0.12); color: #a5b4fc; border: 1px solid rgba(129,140,248,0.22); }
+  .badge-comm { background: rgba(253,186,116,0.12); color: #fbbf72; border: 1px solid rgba(253,186,116,0.22); }
+
+  .scenario-box {
+    background: var(--surface2);
+    border-right: 3px solid var(--gold);
+    border-radius: var(--radius-sm);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.88rem;
+    line-height: 1.85;
+    color: var(--text2);
+  }
+  .scenario-box strong { color: var(--text); }
+
+  .q-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.65;
+    margin-bottom: 1.25rem;
+  }
+
+  /* OPTIONS */
+  .options { display: flex; flex-direction: column; gap: 9px; }
+  .option {
+    display: flex; align-items: flex-start; gap: 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.9rem 1rem;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    text-align: right;
+  }
+  .option:hover:not(.disabled) {
+    border-color: var(--border2);
+    background: rgba(255,255,255,0.04);
+    transform: translateX(-2px);
+  }
+  .option.disabled { cursor: default; }
+  .opt-letter {
+    flex-shrink: 0;
+    width: 26px; height: 26px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text3);
+    transition: all 0.18s;
+  }
+  .opt-text {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--text2);
+    flex: 1;
+    padding-top: 2px;
+  }
+  .option.correct {
+    background: var(--green-dim);
+    border-color: rgba(74,222,128,0.35);
+  }
+  .option.correct .opt-letter {
+    background: var(--green);
+    border-color: var(--green);
+    color: #0f1117;
+  }
+  .option.correct .opt-text { color: #a7f3d0; }
+  .option.wrong {
+    background: var(--red-dim);
+    border-color: rgba(248,113,113,0.3);
+  }
+  .option.wrong .opt-letter {
+    background: var(--red);
+    border-color: var(--red);
+    color: #0f1117;
+  }
+  .option.wrong .opt-text { color: #fca5a5; }
+  .option.reveal {
+    background: var(--green-dim);
+    border-color: rgba(74,222,128,0.25);
+  }
+  .option.reveal .opt-letter {
+    background: rgba(74,222,128,0.3);
+    border-color: rgba(74,222,128,0.5);
+    color: var(--green);
+  }
+  .option.reveal .opt-text { color: #a7f3d0; }
+
+  /* FEEDBACK */
+  .feedback {
+    margin-top: 1.25rem;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    line-height: 1.75;
+    display: none;
+    animation: fadeUp 0.25s ease both;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct {
+    background: rgba(74,222,128,0.07);
+    border: 1px solid rgba(74,222,128,0.2);
+  }
+  .feedback.wrong {
+    background: rgba(248,113,113,0.07);
+    border: 1px solid rgba(248,113,113,0.2);
+  }
+  .feedback-icon {
+    font-size: 1rem;
+    margin-left: 6px;
+  }
+  .feedback-title {
+    font-weight: 700;
+    font-size: 0.875rem;
+    margin-bottom: 5px;
+  }
+  .feedback.correct .feedback-title { color: var(--green); }
+  .feedback.wrong .feedback-title { color: var(--red); }
+  .feedback-body { color: var(--text2); }
+
+  /* NAV */
+  .nav-row {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 1.25rem;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 0.65rem 1.5rem;
+    border-radius: var(--radius-sm);
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s;
+    border: none;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: #0f1117;
+  }
+  .btn-primary:hover { background: var(--gold-light); }
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border2);
+    color: var(--text2);
+  }
+  .btn-ghost:hover { background: var(--surface2); color: var(--text); }
+
+  /* SCORE SCREEN */
+  .score-screen {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    animation: fadeUp 0.4s ease both;
+  }
+  .score-ring {
+    position: relative;
+    width: 140px; height: 140px;
+    margin: 0 auto 1.5rem;
+  }
+  .score-ring svg { transform: rotate(-90deg); }
+  .score-ring-bg { fill: none; stroke: var(--surface2); stroke-width: 8; }
+  .score-ring-fill {
+    fill: none;
+    stroke-width: 8;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1s cubic-bezier(.4,0,.2,1);
+  }
+  .score-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .score-big {
+    font-family: 'Amiri', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .score-sub { font-size: 0.75rem; color: var(--text3); margin-top: 2px; }
+  .score-title {
+    font-family: 'Amiri', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .score-msg { color: var(--text2); font-size: 0.9rem; max-width: 440px; margin: 0 auto 2rem; line-height: 1.7; }
+  .score-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    max-width: 420px;
+    margin: 0 auto 2rem;
+  }
+  .score-stat {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    padding: 0.875rem;
+  }
+  .score-stat-val { font-size: 1.5rem; font-weight: 700; }
+  .score-stat-label { font-size: 0.75rem; color: var(--text3); margin-top: 2px; }
+  .correct-val { color: var(--green); }
+  .wrong-val { color: var(--red); }
+  .pct-val { color: var(--gold); }
+
+  /* DIVIDER */
+  .section-divider {
+    display: flex; align-items: center; gap: 1rem;
+    margin: 2rem 0 1.5rem;
+    color: var(--text3);
+    font-size: 0.78rem;
+  }
+  .section-divider::before, .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* REVIEW */
+  .review-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+  .review-q { font-size: 0.82rem; color: var(--text2); line-height: 1.5; margin-bottom: 6px; }
+  .review-answer {
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .review-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-correct { background: var(--green); }
+  .dot-wrong { background: var(--red); }
+
+  /* TOOLTIP hidden by default */
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="header-icon">🧠</div>
+    <h1>اضطرابات النمو والتقييم التشخيصي</h1>
+    <p>اختبار سيناريو كلينيكي — ABA Resources</p>
+    <div class="meta-row">
+      <div class="meta-pill">عدد الأسئلة: <span id="totalCount">15</span></div>
+      <div class="meta-pill">النوع: <span>سيناريو MCQ</span></div>
+      <div class="meta-pill">المستوى: <span>متقدم</span></div>
+    </div>
+  </div>
+
+  <div id="quizSection">
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-label">التقدم</span>
+        <span class="progress-count" id="progressText">1 / 15</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="card" id="questionCard">
+      <div class="badge-row"><span class="badge" id="qBadge"></span></div>
+      <div class="scenario-box" id="scenarioBox"></div>
+      <div class="q-text" id="questionText"></div>
+      <div class="options" id="optionsContainer"></div>
+      <div class="feedback" id="feedbackBox">
+        <div class="feedback-title" id="feedbackTitle"></div>
+        <div class="feedback-body" id="feedbackBody"></div>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-primary hidden" id="nextBtn" onclick="nextQuestion()">
+        السؤال التالي ←
+      </button>
+    </div>
+  </div>
+
+  <div id="scoreSection" class="hidden">
+    <div class="score-screen">
+      <div class="score-ring">
+        <svg width="140" height="140" viewBox="0 0 140 140">
+          <circle class="score-ring-bg" cx="70" cy="70" r="58"/>
+          <circle class="score-ring-fill" id="scoreCircle" cx="70" cy="70" r="58"
+            stroke-dasharray="364.4" stroke-dashoffset="364.4"/>
+        </svg>
+        <div class="score-center">
+          <div class="score-big" id="scoreBig">0</div>
+          <div class="score-sub" id="scoreSubLabel">من 15</div>
+        </div>
+      </div>
+
+      <div class="score-title" id="scoreTitle"></div>
+      <div class="score-msg" id="scoreMsg"></div>
+
+      <div class="score-grid">
+        <div class="score-stat">
+          <div class="score-stat-val correct-val" id="correctCount">0</div>
+          <div class="score-stat-label">إجابات صحيحة</div>
+        </div>
+        <div class="score-stat">
+          <div class="score-stat-val wrong-val" id="wrongCount">0</div>
+          <div class="score-stat-label">إجابات خاطئة</div>
+        </div>
+        <div class="score-stat">
+          <div class="score-stat-val pct-val" id="pctVal">0%</div>
+          <div class="score-stat-label">النسبة المئوية</div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="restartQuiz()">إعادة الاختبار</button>
+    </div>
+
+    <div class="section-divider">مراجعة الإجابات</div>
+    <div id="reviewList"></div>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  {
+    badge: "تشخيص", badgeClass: "badge-diag",
+    scenario: "طفلة عمرها 7 سنوات. مفرداتها اللغوية ممتازة وقواعدها سليمة، لكنها غير قادرة على استخدام اللغة اجتماعياً لمشاركة الأفكار والمشاعر. تواصلها البصري ضعيف جداً منذ الطفولة المبكرة. تجد صعوبة في قراءة الإشارات الاجتماعية مما أدى لصعوبة في تكوين صداقات. لديها هوس بشخصيات الكرتون وتكرر نصوصها. تُفرط في شم الأشياء وتُصر على ارتداء نفس الملابس يومياً بغض النظر عن الطقس.",
+    question: "ما هو أنسب تشخيص لهذه الحالة؟",
+    options: ["اضطراب التواصل الاجتماعي البراغماتي","اضطراب طيف التوحد","اضطراب نقص الانتباه وفرط النشاط","اضطراب اللغة"],
+    answer: 1,
+    explanation: "الحالة تستوفي معيار A (قصور في التواصل الاجتماعي: ضعف التواصل البصري، صعوبة الصداقات) ومعيار B (سلوكيات متكررة: تكرار نصوص الكرتون، إصرار على نفس الملابس، حساسية حسية - الشم). اضطراب التواصل الاجتماعي البراغماتي يُستبعد لوجود سلوكيات متكررة ومحددة."
+  },
+  {
+    badge: "DSM-5 مستويات", badgeClass: "badge-dsm",
+    scenario: "طفل عمره 5 سنوات يتحدث بجمل كاملة ويستطيع بدء المحادثة، لكنه يفشل في الاستجابة المتبادلة مع الآخرين. لديه اهتمام غير طبيعي الشدة بالمكانس الكهربائية. يتضايق بشدة عند أي تغيير في الروتين اليومي. لا توجد إعاقة عقلية.",
+    question: "وفق DSM-5، ما مستوى الشدة الأنسب لهذه الحالة؟",
+    options: ["المستوى الثالث - يتطلب دعماً كبيراً جداً","المستوى الثاني - يتطلب دعماً متوسطاً","المستوى الأول - يحتاج للدعم","لا ينطبق عليه تشخيص طيف التوحد"],
+    answer: 2,
+    explanation: "المستوى الأول هو الأنسب: الطفل يتحدث بجمل كاملة ويبدأ التواصل لكنه يفشل في التبادل. السلوك المتكرر يُسبب تداخلاً لكن ليس شديداً. في المستوى الأول: بدون دعم تظهر المشكلة بوضوح، لكن مع الدعم يُحقق نتائج جيدة."
+  },
+  {
+    badge: "تشخيص فارقي", badgeClass: "badge-diff",
+    scenario: "طفل عمره 9 سنوات يُحال بسبب ضعف اجتماعي. في المقابلة يذكر أنه 'يسمع أصواتاً أحياناً'. عند الاستفسار يوضح: 'نعم أسمعها من الراديو'. لديه اهتمامات غير تقليدية وبدأت أعراضه بعد فترة نمو شبه طبيعي.",
+    question: "ما الأهم مراعاته عند التشخيص الفارقي بين طيف التوحد والفصام في هذه الحالة؟",
+    options: ["وجود الهلاوس يؤكد تشخيص الفصام مباشرة","الأفراد في طيف التوحد قد يُجيبون بشكل حرفي على أسئلة الهلاوس فتبدو إيجابية كاذبة","الفصام لا يظهر في مرحلة الطفولة أبداً","غياب التواصل البصري يؤكد طيف التوحد دون غيره"],
+    answer: 1,
+    explanation: "حالة كلاسيكية من التفسير الحرفي لدى ذوي طيف التوحد. الطفل أجاب 'نعم' لأنه يسمع أصواتاً حقيقية من الراديو - ليس هلاوساً. يجب الانتباه أن ذوي طيف التوحد يفسرون الأسئلة حرفياً مما يعطي نتائج إيجابية كاذبة لأعراض الفصام."
+  },
+  {
+    badge: "تشخيص فارقي", badgeClass: "badge-diff",
+    scenario: "طفلة عمرها 8 سنوات، لديها صعوبة في التحية وبدء المحادثة مع أشخاص جدد، وصعوبة في فهم النكات والتعابير غير الحرفية. تجد صعوبة في تغيير أسلوب كلامها حسب الموقف. قواعدها اللغوية وتركيب جملها سليمان تماماً. لا يوجد أي اهتمامات ثابتة مكثفة ولا سلوكيات متكررة.",
+    question: "ما التشخيص الأنسب لهذه الحالة؟",
+    options: ["اضطراب طيف التوحد - المستوى الأول","اضطراب اللغة","اضطراب التواصل الاجتماعي البراغماتي","متلازمة أسبرجر"],
+    answer: 2,
+    explanation: "اضطراب التواصل الاجتماعي البراغماتي: مشاكل في الاستخدام الاجتماعي للغة دون وجود سلوكيات متكررة أو اهتمامات ثابتة. الفرق الجوهري عن طيف التوحد هو غياب معيار B. أسبرجر لم يعد تشخيصاً مستقلاً في DSM-5."
+  },
+  {
+    badge: "تقييم وأدوات", badgeClass: "badge-assess",
+    scenario: "طفل عمره 4 سنوات حُوّل للتقييم المعرفي. لا يستطيع المشاركة في اختبارات الذكاء المقننة الاعتيادية بسبب عدم التعاون اللفظي وصعوبة في اتباع التعليمات اللفظية المعقدة.",
+    question: "أي أداة تقييم هي الأنسب في هذه الحالة؟",
+    options: ["مقياس بينيه الخامس SB-5","مقياس جيليام للتوحد GARS-3","مقياس الليتر-3 الأدائي العالمي","استبانة ADOS"],
+    answer: 2,
+    explanation: "مقياس الليتر-3 هو الأنسب: اختبار غير لفظي بالكامل، يُطبق على الأعمار 3-75 سنة، مصمم خصيصاً لمن لا يمكن اخضاعهم للاختبارات اللفظية المقننة. يقيس الذكاء والانتباه والذاكرة دون الحاجة للاستجابة اللفظية. GARS-3 لتشخيص التوحد تحديداً وليس لقياس الذكاء."
+  },
+  {
+    badge: "DSM-4 مقارنة DSM-5", badgeClass: "badge-dsm",
+    scenario: "في ورشة عمل تدريبية حول التشخيص، تناقش مجموعة من المتخصصين الفروق بين DSM-IV-TR و DSM-5 في تشخيص طيف التوحد.",
+    question: "أي من التالي يمثل تغييراً جوهرياً من DSM-IV إلى DSM-5 في تشخيص طيف التوحد؟",
+    options: ["أضاف DSM-5 اشتراط ظهور الأعراض حتماً قبل سن 3 سنوات","دمج DSM-5 التواصل والتفاعل الاجتماعي في محور A واحد وألغى التشخيصات الفرعية","أضاف DSM-5 متلازمة أسبرجر كتشخيص مستقل أكثر تفصيلاً","ألغى DSM-5 اشتراط الخلل الوظيفي كلياً للتشخيص"],
+    answer: 1,
+    explanation: "التغيير الجوهري في DSM-5: دمج معيار التواصل والتفاعل الاجتماعي في محور A واحد. إلغاء التشخيصات الفرعية (التوحد، أسبرجر، PDD-NOS) واستبدالها بتشخيص واحد مع مستويات شدة. لم يعد يُشترط ظهور الأعراض قبل 3 سنوات بل في مرحلة الطفولة المبكرة."
+  },
+  {
+    badge: "ADHD تشخيص", badgeClass: "badge-adhd",
+    scenario: "طفل عمره 6 سنوات لديه صعوبة في البقاء جالساً في الفصل، يتململ باستمرار، يُجيب قبل انتهاء السؤال، يفقد أغراضه يومياً، ولا يُكمل مهامه رغم بدئها. هذه الأعراض موجودة في المدرسة والمنزل معاً منذ عمر 4 سنوات.",
+    question: "أي من التالي ضروري لاستيفاء تشخيص ADHD وفق DSM-5؟",
+    options: ["6 أعراض من قائمة واحدة فقط في بيئة واحدة تكفي","6 أعراض من إحدى القائمتين في بيئتين مختلفتين قبل عمر 12 سنة","يجب أن تكون الأعراض ناتجة عن تمرد أو عناد مثبت","الأعراض يجب أن تظهر فجأة لا تدريجياً"],
+    answer: 1,
+    explanation: "لتشخيص ADHD وفق DSM-5 يجب: (1) 6 أعراض أو أكثر من قائمة نقص الانتباه و/أو فرط النشاط، (2) الظهور قبل عمر 12 سنة، (3) الاستمرار 6 أشهر على الأقل، (4) التأثير في بيئتين مختلفتين على الأقل، (5) ألا تكون ناتجة عن تمرد أو عناد أو عدم فهم."
+  },
+  {
+    badge: "أسرة وتشخيص", badgeClass: "badge-family",
+    scenario: "عائلة تأتي لأول مرة بطفلها المشتبه بإصابته بطيف التوحد. الأم تبكي وتقول: 'لا أصدق أن ابني مريض، كل شيء كان عادياً'. الأب يقول بنبرة غاضبة: 'الأطباء يبالغون، هو فقط نشيط'. الطفل عمره 3 سنوات.",
+    question: "وفق مراحل الصدمة الخمس المذكورة في المحتوى، في أي مرحلة يبدو كل من الأب والأم؟",
+    options: ["الأم في التقبل، الأب في الاكتئاب","الأم في الاكتئاب، الأب في الإنكار","كلاهما في مرحلة الغضب","كلاهما في مرحلة المساومة"],
+    answer: 1,
+    explanation: "مراحل الصدمة الخمس: الإنكار ← الغضب ← المساومة ← الاكتئاب ← التقبل. الأم تبكي وتحزن على ما كان = اكتئاب. الأب يرفض التشخيص ويُشكك في الأطباء = إنكار. الأهم دمج الأهل في العلاج لمساعدتهم على الوصول للتقبل."
+  },
+  {
+    badge: "إعاقة عقلية", badgeClass: "badge-id",
+    scenario: "ولد عمره 7 سنوات يُحال للتقييم. حصل على درجة ذكاء 62 في اختبار مقنن. لديه صعوبة في الرياضيات والقراءة. يستطيع ارتداء ملابسه وحده والتواصل مع أقرانه بشكل مقبول. لا توجد أي أمراض طبية.",
+    question: "ماذا تحتاج إضافةً لدرجة الذكاء المنخفضة لتشخيص الإعاقة العقلية وفق DSM-5؟",
+    options: ["درجة ذكاء أقل من 50 بدلاً من 62","وجود خلل في الوظيفة التكيفية في مجال واحد على الأقل وظهوره قبل سن 18","وجود اضطراب طيف التوحد مرافق","يكفي الحصول على درجة ذكاء منخفضة للتشخيص"],
+    answer: 1,
+    explanation: "تشخيص الإعاقة العقلية يتطلب ثلاثة شروط معاً: (1) ضعف القدرات العقلية يثبته اختبار مقنن، (2) خلل في الوظيفة التكيفية (المفاهيمية أو الاجتماعية أو العملية) بانخفاض انحرافين معياريين أو أكثر، (3) الظهور قبل سن 18. المعيار هو تراجع القدرة وليس الرقم وحده."
+  },
+  {
+    badge: "اضطرابات التواصل", badgeClass: "badge-comm",
+    scenario: "طفلة عمرها 6 سنوات لديها كالم غير واضح جداً. تُخطئ في نطق أصوات متعددة مما يجعل كلامها غير مفهوم لمن لا يعرفها. اختبار السمع طبيعي. قواعدها اللغوية وفهمها سليمان.",
+    question: "أي اضطراب تواصل يصف هذه الحالة تحديداً؟",
+    options: ["اضطراب اللغة Language Disorder","اضطراب صوت الكلام Speech Sound Disorder","التأتأة Stuttering","اضطراب التواصل الاجتماعي البراغماتي"],
+    answer: 1,
+    explanation: "اضطراب صوت الكلام Speech Sound Disorder هو الأنسب: عدم القدرة على إصدار أصوات الكلام الصحيحة رغم سلامة السمع والقواعد اللغوية. يُشخص عندما يكون كلام الطفل أقل وضوحاً من المعدل الطبيعي لعمره. اضطراب اللغة يتعلق بالمفردات والتركيب وليس النطق."
+  },
+  {
+    badge: "GARS-3 تقييم", badgeClass: "badge-assess",
+    scenario: "مختص نفسي يُطبق مقياس GARS-3 على طفل عمره 5 سنوات. الدرجات جاءت: السلوكيات المحددة المتكررة 8، التفاعل الاجتماعي 7، التواصل الاجتماعي 9، الاستجابة الانفعالية 8، النمط المعرفي 6، الكلام غير التكيفي 5. مؤشر التوحد الإجمالي = 88.",
+    question: "وفق جدول تفسير GARS-3، ما مستوى احتمالية الإصابة بطيف التوحد ومستوى الدعم المطلوب؟",
+    options: ["احتمالية مرتفعة جداً - المستوى الثالث","احتمالية محتملة - المستوى الأول","احتمالية غير محتملة - لا توحد","احتمالية محتملة - المستوى الثاني"],
+    answer: 3,
+    explanation: "وفق GARS-3: مؤشر 71-100 = احتمالية محتملة (Probable) = المستوى الثاني من DSM-5 (يتطلب دعماً بدرجة متوسطة). مؤشر ≤54 = غير محتمل، 71-100 = محتمل (المستوى الثاني)، ≥101 = مرتفع جداً (المستوى الثالث). الدرجة 88 تقع في النطاق المحتمل."
+  },
+  {
+    badge: "تشخيص فارقي", badgeClass: "badge-diff",
+    scenario: "طفل عمره 10 سنوات لديه ضعف في القراءة واضح رغم ذكاء طبيعي وتعليم منتظم. يُخطئ في التهجئة، يُبدل الحروف أحياناً، يقرأ ببطء شديد ومجهود كبير. لا توجد مشاكل اجتماعية.",
+    question: "ما التشخيص الأنسب وما المصطلح العلمي المستخدم له تحديداً؟",
+    options: ["اضطراب اللغة Language Disorder","الإعاقة العقلية Intellectual Disability","اضطراب التعلم المحدد مع ضعف في القراءة - عسر القراءة Dyslexia","اضطراب نقص الانتباه وفرط النشاط ADHD"],
+    answer: 2,
+    explanation: "اضطراب التعلم المحدد Specific Learning Disorder مع ضعف في القراءة = عسر القراءة (Dyslexia). الشروط: مشاكل في مهارة أكاديمية محددة (القراءة) رغم ذكاء طبيعي وتعليم كافٍ. مستمرة 6 أشهر على الأقل. لا تعود لإعاقة عقلية أو مشاكل سمع/بصر أو غياب التعليم."
+  },
+  {
+    badge: "معالم النمو", badgeClass: "badge-family",
+    scenario: "أم تأتي قلقة على طفلها البالغ من العمر 4 سنوات. تذكر أنه يلعب وحيداً ولا يهتم بالأطفال الآخرين، لا يتذكر القصص التي تحكيها له، ويفقد المهارات أحياناً بعد اكتسابها. عند الفحص تجد المختصة أنه لا يفهم مفهوم 'المتشابه والمختلف'.",
+    question: "وفق معالم النمو غير الطبيعي في عمر 4 سنوات، أي من ملاحظات الأم تُعد علامة تحذير (Red Flag) تحتاج تقييماً فورياً؟",
+    options: ["اللعب وحيداً أحياناً","عدم الاهتمام ببعض الأطفال","فقدان المهارات المكتسبة","عدم فهم مفهوم المتشابه والمختلف"],
+    answer: 2,
+    explanation: "فقدان المهارات المكتسبة سابقاً هو Red Flag خاص جداً بطيف التوحد وذُكر في المحتوى صراحةً. يُعد نادراً في الاضطرابات الأخرى ويجب التقييم الفوري. باقي المؤشرات قد تكون ضمن التنوع الطبيعي أو أقل إلحاحاً في الإحالة."
+  },
+  {
+    badge: "ADHD تشخيص", badgeClass: "badge-adhd",
+    scenario: "طالبة عمرها 16 سنة تُحال بسبب ضعف أكاديمي. أهلها يذكرون أنها دائماً كانت 'مشتتة' منذ الابتدائية لكنهم لم يُبلغوا. الآن في الثانوية المطالب زادت فظهرت المشكلة بوضوح. أعراضها: نسيان المواعيد، عدم تنظيم الوقت، الغياب عن المواعيد النهائية.",
+    question: "هل يمكن تشخيصها بـ ADHD رغم أن الأعراض لم تُشكّل مشكلة واضحة حتى سن 16؟",
+    options: ["لا، لأن الأعراض يجب أن تُسبب مشكلة واضحة قبل سن 12 سنة بوضوح تام","نعم، إذا ثبت أن الأعراض كانت موجودة قبل 12 سنة حتى لو لم تظهر بوضوح بسبب استراتيجيات التعويض","لا، ADHD يُشخص فقط عند الأطفال دون 12 سنة","نعم، يكفي ظهور الأعراض لأول مرة في المراهقة"],
+    answer: 1,
+    explanation: "نعم يمكن التشخيص. DSM-5 يُشير إلى أن الأعراض قد تظهر بوضوح فقط عندما تزيد المتطلبات الاجتماعية والأكاديمية. الشرط هو أن تكون الأعراض موجودة قبل سن 12 سنة ولو بشكل خفي أو معوَّض. في حالة الإناث خاصةً يُعوَّض كثيراً وتُكتشف متأخراً."
+  },
+  {
+    badge: "المقابلة الكلينيكية", badgeClass: "badge-assess",
+    scenario: "اختصاصي نفسي يُجري مقابلة كلينيكية مع والدي طفل مشتبه بإصابته بطيف التوحد. قرر توثيق المعلومات بالكتابة خلال الجلسة.",
+    question: "وفق المحتوى المذكور عن توثيق المقابلة الكلينيكية، ما هو العيب الرئيسي لأسلوب الكتابة المكثفة خلال الجلسة؟",
+    options: ["يُعد غير قانوني ويتطلب موافقة خطية مسبقة","قد يُعيق التواصل البصري ومراقبة اللغة غير اللفظية للعميل","يُقلل من دقة المعلومات المسجلة","هو أفضل أسلوب ويُنصح به دائماً"],
+    answer: 1,
+    explanation: "الكتابة المكثفة خلال الجلسة قد تُعيق عملية المراقبة وتُقلل من التواصل البصري مما يُفوّت المختص ملاحظة اللغة غير اللفظية للعميل وهي معلومات قيّمة. الحل الأمثل هو التسجيل (بموافقة العميل) أو تسجيل أكبر قدر من البيانات دون التأثير على التواصل الفعال."
+  }
+];
+
+let current = 0;
+let score = 0;
+let userAnswers = [];
+let answered = false;
+const letters = ['أ','ب','ج','د'];
+
+function init() {
+  current = 0;
+  score = 0;
+  userAnswers = [];
+  answered = false;
+  document.getElementById('totalCount').textContent = questions.length;
+  document.getElementById('scoreSubLabel').textContent = 'من ' + questions.length;
+  document.getElementById('quizSection').classList.remove('hidden');
+  document.getElementById('scoreSection').classList.add('hidden');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  answered = false;
+  const q = questions[current];
+  const pct = Math.round((current / questions.length) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = (current + 1) + ' / ' + questions.length;
+
+  const badge = document.getElementById('qBadge');
+  badge.textContent = q.badge;
+  badge.className = 'badge ' + q.badgeClass;
+
+  document.getElementById('scenarioBox').textContent = q.scenario;
+  document.getElementById('questionText').textContent = q.question;
+
+  const opts = document.getElementById('optionsContainer');
+  opts.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const el = document.createElement('div');
+    el.className = 'option';
+    el.id = 'opt' + i;
+    el.innerHTML = `<span class="opt-letter">${letters[i]}</span><span class="opt-text">${opt}</span>`;
+    el.addEventListener('click', () => choose(i));
+    opts.appendChild(el);
+  });
+
+  const fb = document.getElementById('feedbackBox');
+  fb.className = 'feedback';
+  document.getElementById('nextBtn').classList.add('hidden');
+}
+
+function choose(idx) {
+  if (answered) return;
+  answered = true;
+  const q = questions[current];
+  const isCorrect = idx === q.answer;
+  if (isCorrect) score++;
+  userAnswers.push({ question: q.question, chosen: idx, correct: q.answer, isCorrect });
+
+  for (let i = 0; i < q.options.length; i++) {
+    const el = document.getElementById('opt' + i);
+    el.classList.add('disabled');
+    el.removeEventListener('click', () => choose(i));
+    if (i === q.answer) {
+      el.classList.add(isCorrect ? 'correct' : 'reveal');
+    } else if (i === idx) {
+      el.classList.add('wrong');
+    }
+  }
+
+  const fb = document.getElementById('feedbackBox');
+  const title = document.getElementById('feedbackTitle');
+  const body = document.getElementById('feedbackBody');
+
+  if (isCorrect) {
+    fb.className = 'feedback correct show';
+    title.textContent = '✓ إجابة صحيحة';
+    body.textContent = q.explanation;
+  } else {
+    fb.className = 'feedback wrong show';
+    title.textContent = '✗ الإجابة الصحيحة: ' + q.options[q.answer];
+    body.textContent = q.explanation;
+  }
+
+  document.getElementById('nextBtn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= questions.length) {
+    showScore();
+  } else {
+    renderQuestion();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function showScore() {
+  document.getElementById('quizSection').classList.add('hidden');
+  document.getElementById('scoreSection').classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  const pct = Math.round((score / questions.length) * 100);
+  document.getElementById('correctCount').textContent = score;
+  document.getElementById('wrongCount').textContent = questions.length - score;
+  document.getElementById('pctVal').textContent = pct + '%';
+  document.getElementById('scoreBig').textContent = score + '/' + questions.length;
+
+  let title, msg;
+  if (pct >= 87) {
+    title = 'ممتاز! إتقان عالٍ';
+    msg = 'أداء متميز يعكس فهماً عميقاً للاضطرابات النمائية ومعايير التشخيص. استمر في هذا المستوى.';
+  } else if (pct >= 70) {
+    title = 'جيد جداً';
+    msg = 'فهم جيد للمحتوى مع بعض الثغرات. راجع تفسيرات الإجابات الخاطئة لتعزيز الفهم.';
+  } else if (pct >= 55) {
+    title = 'مقبول - يحتاج مراجعة';
+    msg = 'فهم أساسي للمحتوى. ننصح بمراجعة محاور التشخيص الفارقي وأدوات التقييم بشكل أعمق.';
+  } else {
+    title = 'يحتاج مزيداً من الدراسة';
+    msg = 'راجع المحتوى الكامل مع التركيز على معايير DSM-5 ومستويات الشدة والتشخيص الفارقي.';
+  }
+
+  document.getElementById('scoreTitle').textContent = title;
+  document.getElementById('scoreMsg').textContent = msg;
+
+  const circumference = 364.4;
+  const offset = circumference - (pct / 100) * circumference;
+  const circle = document.getElementById('scoreCircle');
+  const color = pct >= 70 ? '#4ade80' : pct >= 55 ? '#c9a84c' : '#f87171';
+  circle.style.stroke = color;
+  setTimeout(() => { circle.style.strokeDashoffset = offset; }, 100);
+
+  document.getElementById('scoreBig').style.color = color;
+
+  const reviewList = document.getElementById('reviewList');
+  reviewList.innerHTML = '';
+  userAnswers.forEach((ua, i) => {
+    const q = questions[i];
+    const item = document.createElement('div');
+    item.className = 'review-item';
+    item.innerHTML = `
+      <div class="review-q"><strong>س${i+1}:</strong> ${ua.question}</div>
+      <div class="review-answer">
+        <span class="review-dot ${ua.isCorrect ? 'dot-correct' : 'dot-wrong'}"></span>
+        ${ua.isCorrect
+          ? `<span style="color:var(--green)">إجابتك: ${q.options[ua.chosen]}</span>`
+          : `<span style="color:var(--red)">إجابتك: ${q.options[ua.chosen]}</span>
+             <span style="color:var(--text3);margin-right:8px">|</span>
+             <span style="color:var(--green)">الصحيحة: ${q.options[ua.correct]}</span>`
+        }
+      </div>`;
+    reviewList.appendChild(item);
+  });
+}
+
+function restartQuiz() {
+  init();
+}
+
+init();
+</script>
+</body>
+</html>
