@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neurodevelopmental Disorders — Clinical Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0e14;
+    --surface: #13161f;
+    --surface2: #1c2030;
+    --surface3: #242840;
+    --border: rgba(255,255,255,0.06);
+    --border2: rgba(255,255,255,0.11);
+    --border3: rgba(255,255,255,0.18);
+    --gold: #c8a84b;
+    --gold-light: #e6c96a;
+    --gold-dim: rgba(200,168,75,0.11);
+    --teal: #2dd4bf;
+    --teal-dim: rgba(45,212,191,0.09);
+    --violet: #a78bfa;
+    --violet-dim: rgba(167,139,250,0.1);
+    --orange: #fb923c;
+    --orange-dim: rgba(251,146,60,0.1);
+    --red: #f87171;
+    --red-dim: rgba(248,113,113,0.09);
+    --green: #4ade80;
+    --green-dim: rgba(74,222,128,0.09);
+    --blue: #60a5fa;
+    --blue-dim: rgba(96,165,250,0.09);
+    --text: #eef0f6;
+    --text2: #8b94b0;
+    --text3: #4a5070;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --radius-xs: 6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 0 1rem 5rem;
+    background-image:
+      radial-gradient(ellipse 60% 40% at 15% 5%, rgba(200,168,75,0.05) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 85% 90%, rgba(45,212,191,0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 70% 20%, rgba(167,139,250,0.03) 0%, transparent 60%);
+  }
+
+  .container {
+    width: 100%;
+    max-width: 800px;
+    padding-top: 2.5rem;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+  .logo-mark {
+    width: 52px; height: 52px;
+    background: var(--gold-dim);
+    border: 1px solid rgba(200,168,75,0.28);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    margin-bottom: 1.1rem;
+  }
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+  .header h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .header p {
+    font-size: 0.85rem;
+    color: var(--text3);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .chips {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 1.25rem;
+  }
+  .chip {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 0.75rem;
+    color: var(--text2);
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    padding: 5px 13px;
+    border-radius: 99px;
+  }
+  .chip b { color: var(--gold); font-weight: 600; }
+
+  /* ── PROGRESS ── */
+  .progress-wrap { margin-bottom: 1.75rem; }
+  .progress-meta {
+    display: flex; justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text3);
+    margin-bottom: 7px;
+  }
+  .progress-meta span:last-child { color: var(--gold); font-weight: 600; }
+  .track {
+    height: 3px;
+    background: var(--surface2);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 99px;
+    transition: width 0.55s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 1.75rem 2rem;
+    animation: slideUp 0.32s cubic-bezier(.4,0,.2,1) both;
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* badge */
+  .badge-row { margin-bottom: 1.1rem; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: var(--radius-xs);
+  }
+  .b-diag    { background: var(--gold-dim);   color: var(--gold);   border: 1px solid rgba(200,168,75,0.22); }
+  .b-dsm     { background: var(--violet-dim); color: var(--violet); border: 1px solid rgba(167,139,250,0.22); }
+  .b-diff    { background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(251,146,60,0.22); }
+  .b-assess  { background: var(--teal-dim);   color: var(--teal);   border: 1px solid rgba(45,212,191,0.2); }
+  .b-adhd    { background: var(--red-dim);    color: var(--red);    border: 1px solid rgba(248,113,113,0.2); }
+  .b-family  { background: var(--green-dim);  color: var(--green);  border: 1px solid rgba(74,222,128,0.18); }
+  .b-id      { background: var(--blue-dim);   color: var(--blue);   border: 1px solid rgba(96,165,250,0.2); }
+  .b-comm    { background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(251,146,60,0.22); }
+
+  /* scenario */
+  .scenario {
+    background: var(--surface2);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.4rem;
+    font-size: 0.875rem;
+    line-height: 1.85;
+    color: var(--text2);
+  }
+  .scenario strong { color: var(--text); }
+
+  .q-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 0.5rem;
+  }
+  .q-text {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 1.35rem;
+  }
+
+  /* ── OPTIONS ── */
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .option {
+    display: flex; align-items: flex-start; gap: 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.875rem 1.1rem;
+    cursor: pointer;
+    transition: border-color 0.16s, background 0.16s, transform 0.16s;
+    user-select: none;
+  }
+  .option:hover:not(.locked) {
+    border-color: var(--border3);
+    background: var(--surface3);
+    transform: translateX(3px);
+  }
+  .option.locked { cursor: default; }
+  .opt-key {
+    flex-shrink: 0;
+    width: 27px; height: 27px;
+    border-radius: var(--radius-xs);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text3);
+    transition: all 0.16s;
+    letter-spacing: 0;
+  }
+  .opt-text {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--text2);
+    flex: 1;
+    padding-top: 3px;
+  }
+  .option.is-correct {
+    background: rgba(74,222,128,0.07);
+    border-color: rgba(74,222,128,0.32);
+  }
+  .option.is-correct .opt-key {
+    background: var(--green); border-color: var(--green); color: #0c0e14;
+  }
+  .option.is-correct .opt-text { color: #a7f3d0; }
+  .option.is-wrong {
+    background: rgba(248,113,113,0.07);
+    border-color: rgba(248,113,113,0.28);
+  }
+  .option.is-wrong .opt-key {
+    background: var(--red); border-color: var(--red); color: #0c0e14;
+  }
+  .option.is-wrong .opt-text { color: #fca5a5; }
+  .option.is-reveal {
+    background: rgba(74,222,128,0.05);
+    border-color: rgba(74,222,128,0.2);
+  }
+  .option.is-reveal .opt-key {
+    background: rgba(74,222,128,0.2);
+    border-color: rgba(74,222,128,0.4);
+    color: var(--green);
+  }
+  .option.is-reveal .opt-text { color: #a7f3d0; }
+
+  /* ── FEEDBACK ── */
+  .feedback {
+    margin-top: 1.25rem;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.845rem;
+    line-height: 1.8;
+    display: none;
+    animation: slideUp 0.22s ease both;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct-fb {
+    background: rgba(74,222,128,0.06);
+    border: 1px solid rgba(74,222,128,0.18);
+  }
+  .feedback.wrong-fb {
+    background: rgba(248,113,113,0.06);
+    border: 1px solid rgba(248,113,113,0.18);
+  }
+  .fb-title {
+    font-weight: 600;
+    font-size: 0.82rem;
+    margin-bottom: 5px;
+  }
+  .correct-fb .fb-title { color: var(--green); }
+  .wrong-fb .fb-title   { color: var(--red); }
+  .fb-body { color: var(--text2); }
+
+  /* ── NAV ── */
+  .nav-row {
+    display: flex; justify-content: flex-end;
+    margin-top: 1.25rem;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 0.6rem 1.4rem;
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.16s;
+  }
+  .btn-gold {
+    background: var(--gold);
+    color: #0c0e14;
+  }
+  .btn-gold:hover { background: var(--gold-light); }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border2);
+    color: var(--text2);
+  }
+  .btn-outline:hover { background: var(--surface2); color: var(--text); }
+  .hidden { display: none !important; }
+
+  /* ── SCORE ── */
+  .score-screen {
+    text-align: center;
+    padding: 2.5rem 1rem 1rem;
+    animation: slideUp 0.4s ease both;
+  }
+  .ring-wrap {
+    position: relative;
+    width: 148px; height: 148px;
+    margin: 0 auto 1.75rem;
+  }
+  .ring-wrap svg { transform: rotate(-90deg); }
+  .ring-bg   { fill: none; stroke: var(--surface2); stroke-width: 9; }
+  .ring-arc  { fill: none; stroke-width: 9; stroke-linecap: round; transition: stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1); }
+  .ring-center {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .ring-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.6rem;
+    font-weight: 400;
+    line-height: 1;
+  }
+  .ring-sub { font-size: 0.72rem; color: var(--text3); margin-top: 3px; }
+
+  .score-heading {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.55rem;
+    margin-bottom: 0.5rem;
+  }
+  .score-desc {
+    color: var(--text2);
+    font-size: 0.88rem;
+    max-width: 440px;
+    margin: 0 auto 2rem;
+    line-height: 1.75;
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 0.875rem;
+    max-width: 400px;
+    margin: 0 auto 2rem;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    padding: 1rem 0.75rem;
+  }
+  .stat-val { font-size: 1.6rem; font-weight: 600; line-height: 1; }
+  .stat-lbl { font-size: 0.72rem; color: var(--text3); margin-top: 4px; }
+  .val-green { color: var(--green); }
+  .val-red   { color: var(--red); }
+  .val-gold  { color: var(--gold); }
+
+  /* ── REVIEW ── */
+  .section-rule {
+    display: flex; align-items: center; gap: 1rem;
+    color: var(--text3);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 2.5rem 0 1.25rem;
+  }
+  .section-rule::before, .section-rule::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+  .review-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.875rem 1.1rem;
+    margin-bottom: 0.625rem;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .r-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+  .r-dot.c { background: var(--green); }
+  .r-dot.w { background: var(--red); }
+  .r-body { flex: 1; }
+  .r-q {
+    font-size: 0.8rem;
+    color: var(--text2);
+    line-height: 1.5;
+    margin-bottom: 5px;
+  }
+  .r-q strong { color: var(--text3); }
+  .r-ans {
+    font-size: 0.775rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .r-correct-txt { color: var(--green); }
+  .r-wrong-txt   { color: var(--red); }
+  .r-sep { color: var(--text3); margin: 0 6px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-mark">🧠</div>
+    <h1>Neurodevelopmental Disorders<br><em>Clinical Assessment Quiz</em></h1>
+    <p>ABA Resources &nbsp;·&nbsp; Scenario-Based MCQ</p>
+    <div class="chips">
+      <div class="chip">Questions: <b id="totalCount">15</b></div>
+      <div class="chip">Format: <b>Clinical Scenario MCQ</b></div>
+      <div class="chip">Level: <b>Advanced</b></div>
+    </div>
+  </div>
+
+  <!-- QUIZ SECTION -->
+  <div id="quizSection">
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span>Progress</span>
+        <span id="progressText">1 / 15</span>
+      </div>
+      <div class="track"><div class="fill" id="fillBar" style="width:0%"></div></div>
+    </div>
+
+    <div class="card" id="questionCard">
+      <div class="badge-row"><span class="badge" id="qBadge"></span></div>
+      <div class="scenario" id="scenarioBox"></div>
+      <div class="q-label">Question</div>
+      <div class="q-text" id="questionText"></div>
+      <div class="options" id="optionsWrap"></div>
+      <div class="feedback" id="feedbackBox">
+        <div class="fb-title" id="fbTitle"></div>
+        <div class="fb-body" id="fbBody"></div>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-gold hidden" id="nextBtn" onclick="nextQ()">
+        Next Question →
+      </button>
+    </div>
+  </div>
+
+  <!-- SCORE SECTION -->
+  <div id="scoreSection" class="hidden">
+    <div class="score-screen">
+      <div class="ring-wrap">
+        <svg width="148" height="148" viewBox="0 0 148 148">
+          <circle class="ring-bg" cx="74" cy="74" r="62"/>
+          <circle class="ring-arc" id="ringArc" cx="74" cy="74" r="62"
+            stroke-dasharray="389.6" stroke-dashoffset="389.6"/>
+        </svg>
+        <div class="ring-center">
+          <div class="ring-num" id="ringNum">0</div>
+          <div class="ring-sub" id="ringSub">of 15</div>
+        </div>
+      </div>
+      <div class="score-heading" id="scoreHeading"></div>
+      <div class="score-desc" id="scoreDesc"></div>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-val val-green" id="stCorrect">0</div>
+          <div class="stat-lbl">Correct</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val val-red" id="stWrong">0</div>
+          <div class="stat-lbl">Incorrect</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val val-gold" id="stPct">0%</div>
+          <div class="stat-lbl">Score</div>
+        </div>
+      </div>
+      <button class="btn btn-gold" onclick="restartQuiz()">Retake Quiz</button>
+    </div>
+
+    <div class="section-rule">Answer Review</div>
+    <div id="reviewList"></div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+const questions = [
+  {
+    badge:"Diagnosis", cls:"b-diag",
+    scenario:"A 7-year-old girl is brought in for evaluation. Her family reports excellent vocabulary and correct grammar, but she is unable to use language socially to share ideas or feelings. Her eye contact has never been good. She struggles to read social cues, making it difficult to form friendships. She is preoccupied with animated characters and repeatedly recites their scripts. She excessively smells objects and insists on wearing the same shirt and shorts every day regardless of weather or season. Symptoms appeared in early childhood and cause significant impairment.",
+    question:"What is the most appropriate diagnosis for this case?",
+    options:["Social (Pragmatic) Communication Disorder","Autism Spectrum Disorder","Attention-Deficit/Hyperactivity Disorder","Language Disorder"],
+    answer:1,
+    explanation:"This case meets Criterion A (social communication deficits: poor eye contact, inability to read social cues, difficulty forming friendships) and Criterion B (restricted/repetitive behaviors: scripted speech from cartoons, insistence on same clothing, excessive smelling). Social (Pragmatic) Communication Disorder is ruled out because restricted/repetitive behaviors are present — the hallmark distinction."
+  },
+  {
+    badge:"DSM-5 Severity", cls:"b-dsm",
+    scenario:"A 5-year-old boy presents to the clinic. He speaks in full sentences and can initiate conversations, but consistently fails at reciprocal back-and-forth exchanges. He has an unusually intense preoccupation with vacuum cleaners. He becomes extremely distressed with any change to his daily routine. No intellectual disability is identified.",
+    question:"According to DSM-5, what is the most appropriate severity level for this presentation?",
+    options:["Level 3 — Requiring very substantial support","Level 2 — Requiring substantial support","Level 1 — Requiring support","This presentation does not meet ASD criteria"],
+    answer:2,
+    explanation:"Level 1 is most appropriate: the child speaks in full sentences and initiates communication but fails at reciprocal interaction. Restricted/repetitive behaviors (vacuum preoccupation + rigid routine) cause interference but are not pervasive. The defining feature of Level 1: without support, deficits cause noticeable impairments; with support, outcomes are achievable."
+  },
+  {
+    badge:"Differential Diagnosis", cls:"b-diff",
+    scenario:"A 9-year-old boy is referred for social difficulties. During the clinical interview, he mentions he 'hears voices sometimes.' On follow-up inquiry, he clarifies: 'Yes, I hear them — from the radio.' He has unconventional interests and his current symptoms emerged after a period of largely typical development.",
+    question:"What is the most critical consideration when conducting differential diagnosis between ASD and Childhood-Onset Schizophrenia in this case?",
+    options:["The presence of voices confirms Schizophrenia immediately","Individuals with ASD may respond literally to questions about hallucinations, producing false positives","Schizophrenia never occurs in childhood","Absent eye contact alone confirms an ASD diagnosis"],
+    answer:1,
+    explanation:"This is a classic example of literal interpretation in ASD. The child answered 'yes' because he genuinely hears sounds — from the radio — not auditory hallucinations. Clinicians must be aware that individuals with ASD interpret questions concretely and literally, which can yield false-positive responses to schizophrenia screening questions. This rigidity in interpretation is itself a clinical feature of ASD."
+  },
+  {
+    badge:"Differential Diagnosis", cls:"b-diff",
+    scenario:"An 8-year-old girl is referred for social difficulties. She struggles to greet new people, initiate conversations, and understand jokes or non-literal language. She finds it difficult to adjust her communication style depending on context. Her grammar and sentence structure are entirely intact. There are no fixed intense interests and no repetitive behaviors whatsoever.",
+    question:"What is the most appropriate diagnosis for this presentation?",
+    options:["Autism Spectrum Disorder — Level 1","Language Disorder","Social (Pragmatic) Communication Disorder","Asperger's Syndrome"],
+    answer:2,
+    explanation:"Social (Pragmatic) Communication Disorder: persistent difficulties in the social use of verbal and nonverbal communication without the presence of restricted/repetitive behaviors or fixated interests. The critical distinction from ASD is the absence of DSM-5 Criterion B symptoms. Asperger's Syndrome no longer exists as a standalone diagnosis in DSM-5 — it is subsumed under ASD."
+  },
+  {
+    badge:"Assessment Tools", cls:"b-assess",
+    scenario:"A 4-year-old boy is referred for cognitive evaluation. He is unable to participate in standard intelligence tests due to limited verbal cooperation and difficulty following complex verbal instructions. The referring clinician needs a valid measure of his cognitive abilities.",
+    question:"Which assessment tool is most appropriate in this case?",
+    options:["Stanford-Binet Intelligence Scales, Fifth Edition (SB-5)","Gilliam Autism Rating Scale, Third Edition (GARS-3)","Leiter International Performance Scale, Third Edition (Leiter-3)","Autism Diagnostic Observation Schedule (ADOS)"],
+    answer:2,
+    explanation:"The Leiter-3 is the most appropriate choice: it is entirely nonverbal, normed for ages 3–75, and specifically designed for individuals who cannot be assessed through verbal standardized testing. It measures general intelligence, attention, and memory without requiring verbal responses. GARS-3 screens for ASD specifically, not cognitive ability. SB-5 requires verbal cooperation. ADOS is an observational diagnostic tool, not an IQ measure."
+  },
+  {
+    badge:"DSM-IV vs DSM-5", cls:"b-dsm",
+    scenario:"During a professional training workshop, a group of clinicians is reviewing the diagnostic evolution of autism spectrum disorder, comparing DSM-IV-TR and DSM-5 criteria.",
+    question:"Which of the following represents a core change from DSM-IV-TR to DSM-5 in the diagnosis of Autism Spectrum Disorder?",
+    options:["DSM-5 added a strict requirement that symptoms must appear before age 3","DSM-5 merged social communication and social interaction into one Criterion A domain, and eliminated separate subcategory diagnoses","DSM-5 added Asperger's Syndrome as a more detailed, distinct subtype","DSM-5 eliminated the functional impairment requirement entirely"],
+    answer:1,
+    explanation:"The core structural change in DSM-5: social communication and social interaction were merged into a single Criterion A domain. All subcategory diagnoses (Autistic Disorder, Asperger's, PDD-NOS) were eliminated and replaced with a single ASD diagnosis with severity levels. DSM-5 also removed the requirement that symptoms appear before age 3 — replacing it with 'early developmental period,' acknowledging that symptoms may not become apparent until social demands exceed capacity."
+  },
+  {
+    badge:"ADHD Diagnosis", cls:"b-adhd",
+    scenario:"A 6-year-old boy presents with difficulty staying seated in class, constant fidgeting, answering questions before they are completed, daily loss of belongings, and inability to finish tasks despite starting them. His parents confirm these behaviors have been present at school and at home since he was 4 years old.",
+    question:"Which of the following is required to meet DSM-5 criteria for ADHD?",
+    options:["6 symptoms from a single symptom domain in one setting only","6 symptoms from one or both domains present in two or more settings, with onset before age 12","Symptoms must be attributable to confirmed oppositional or defiant behavior","Symptoms must have sudden onset, not gradual development"],
+    answer:1,
+    explanation:"DSM-5 ADHD requires: (1) ≥6 symptoms from the inattention and/or hyperactivity-impulsivity domains, (2) onset before age 12, (3) present for ≥6 months, (4) present in two or more settings (e.g., home + school), (5) causing significant impairment in social, academic, or occupational functioning, and (6) not better explained by another mental disorder, oppositional behavior, or failure to understand instructions."
+  },
+  {
+    badge:"Family Impact", cls:"b-family",
+    scenario:"A family brings their 3-year-old for a first evaluation. The mother is tearful and says: 'I cannot believe my son is sick — everything seemed fine.' The father responds with an irritated tone: 'The doctors are exaggerating; he's just energetic.' This is their first clinical contact.",
+    question:"Based on the five stages of grief/shock response described in the course content, which stage does each parent appear to be in?",
+    options:["Mother: acceptance; Father: depression","Mother: depression; Father: denial","Both are in the anger stage","Both are in the bargaining stage"],
+    answer:1,
+    explanation:"The five stages of shock response are: Denial → Anger → Bargaining → Depression → Acceptance. The mother's tearfulness and grief ('I cannot believe it') reflect Depression. The father's dismissiveness and rejection of the diagnosis ('doctors are exaggerating') reflect Denial. Both stages are early in the grief process. Integrating parents into the treatment and support plan is essential to help them progress toward Acceptance."
+  },
+  {
+    badge:"Intellectual Disability", cls:"b-id",
+    scenario:"A 7-year-old boy is referred for evaluation. He scores 62 on a standardized intelligence test. He has difficulties with mathematics and reading. However, he can dress himself independently and communicates adequately with peers. No medical conditions are identified.",
+    question:"Beyond the low IQ score, what additional criterion must be met to diagnose Intellectual Disability according to DSM-5?",
+    options:["An IQ score below 50 is required rather than 62","Deficits in adaptive functioning in at least one domain, with onset before age 18","A co-occurring Autism Spectrum Disorder diagnosis","A low IQ score alone is sufficient for diagnosis"],
+    answer:1,
+    explanation:"Intellectual Disability requires all three criteria simultaneously: (1) deficits in intellectual functions confirmed by standardized testing, (2) deficits in adaptive functioning (conceptual, social, or practical skills) — operationalized as ≥2 standard deviations below the mean on a standardized adaptive behavior measure — causing failure to meet developmental and sociocultural standards, and (3) onset during the developmental period (before age 18). The clinical standard is a pattern of impaired capacity, not a number alone."
+  },
+  {
+    badge:"Communication Disorders", cls:"b-comm",
+    scenario:"A 6-year-old girl presents with very unclear speech. She makes errors across multiple speech sounds, making her speech largely unintelligible to unfamiliar listeners. Audiological testing is normal. Her language comprehension and grammatical structure are entirely intact.",
+    question:"Which specific communication disorder best describes this presentation?",
+    options:["Language Disorder","Speech Sound Disorder","Stuttering (Childhood-Onset Fluency Disorder)","Social (Pragmatic) Communication Disorder"],
+    answer:1,
+    explanation:"Speech Sound Disorder is characterized by persistent difficulty producing speech sounds correctly — not due to hearing loss, structural abnormality, or neurological conditions — resulting in unintelligible speech. The critical distinction: Language Disorder involves deficits in vocabulary, grammar, and sentence structure, while Speech Sound Disorder specifically involves the production of phonemes. This child's intact comprehension and grammar confirm the latter."
+  },
+  {
+    badge:"GARS-3 Scoring", cls:"b-assess",
+    scenario:"A clinician administers the GARS-3 to a 5-year-old. Subscale scores yield an Autism Index of 88.",
+    question:"According to the GARS-3 scoring and interpretation table, what probability of ASD and DSM-5 severity level does this score correspond to?",
+    options:["Very likely ASD — Level 3 (Very Substantial Support)","Unlikely ASD — No diagnosis indicated","Probable ASD — Level 1 (Support Required)","Probable ASD — Level 2 (Substantial Support Required)"],
+    answer:3,
+    explanation:"GARS-3 Autism Index interpretation: ≤54 = Unlikely ASD; 55–70 = Level 1 (Support); 71–100 = Probable ASD / Level 2 (Substantial Support); ≥101 = Very Likely ASD / Level 3 (Very Substantial Support). An index of 88 falls in the 71–100 range, corresponding to 'Probable ASD' with DSM-5 Level 2 severity. The GARS-3 was developed in alignment with DSM-5 diagnostic criteria."
+  },
+  {
+    badge:"Developmental Milestones", cls:"b-family",
+    scenario:"A mother presents with concerns about her 4-year-old son. She reports he tends to play alone, does not remember stories she tells him, and occasionally loses skills he had previously acquired. On examination, the clinician notes he cannot understand the concept of 'same versus different.'",
+    question:"According to the abnormal developmental milestones for age 4 outlined in the course content, which of the mother's observations constitutes the most critical red flag warranting immediate referral?",
+    options:["Playing alone at times","Disinterest in some other children","Loss of previously acquired skills","Inability to understand 'same vs. different'"],
+    answer:2,
+    explanation:"Regression or loss of previously acquired skills is explicitly cited in the course content as a Red Flag that is rare in other developmental disorders and is a distinguishing marker specifically associated with Autism Spectrum Disorder. It warrants immediate referral for comprehensive evaluation. The other observations, while potentially concerning in context, fall within broader developmental variability or represent milder milestone delays."
+  },
+  {
+    badge:"ADHD — Late Identification", cls:"b-adhd",
+    scenario:"A 16-year-old girl is referred for academic difficulties. Her parents mention she has always been 'spacey' since elementary school, but they never sought evaluation. Now that secondary school demands have increased, her difficulties are undeniable. She presents with chronic appointment-forgetting, poor time management, and missed deadlines.",
+    question:"Can she be diagnosed with ADHD if her symptoms did not cause obvious impairment until age 16?",
+    options:["No — symptoms must have caused clear, documented impairment before age 12 to qualify","Yes — if symptoms were present before age 12, even if masked by compensatory strategies, DSM-5 criteria can be met","No — ADHD can only be diagnosed in children under age 12","Yes — onset of impairment in adolescence alone is sufficient for diagnosis"],
+    answer:1,
+    explanation:"Yes, diagnosis is possible. DSM-5 specifies that 'several inattentive or hyperactive-impulsive symptoms were present before age 12' — it does not require that impairment was obvious. Symptoms can be masked through compensatory strategies, supportive environments, or lower academic demands until complexity increases. This is particularly common in females, who are diagnosed later on average due to more internalized symptom profiles and effective masking."
+  },
+  {
+    badge:"Clinical Interview", cls:"b-assess",
+    scenario:"A clinical psychologist is conducting an intake interview with parents of a child suspected of having ASD. The clinician decides to document information by writing extensively during the session.",
+    question:"According to the course content on clinical interview documentation, what is the primary drawback of extensive note-taking during the session?",
+    options:["It is legally prohibited without prior written consent","It may impair eye contact and reduce observation of the client's nonverbal communication","It significantly reduces the accuracy of recorded information","It is considered the gold-standard method and has no significant drawbacks"],
+    answer:1,
+    explanation:"Extensive in-session writing can impair the clinician's ability to maintain eye contact and observe the client's nonverbal language — which carries clinically valuable diagnostic information. The recommended approach is either audio/video recording (with client consent, framed as protecting their information) or recording key observations without allowing documentation to interrupt the therapeutic alliance and observational quality."
+  },
+  {
+    badge:"Catatonia in NDD", cls:"b-diff",
+    scenario:"A 14-year-old with a known ASD diagnosis is admitted following a sudden behavioral change. He has become almost completely mute, maintains odd fixed body postures for extended periods, and shows waxy flexibility when his limbs are repositioned. He has also begun echolalia. These symptoms appeared acutely over two weeks.",
+    question:"What DSM-5 specifier or associated condition best describes this new presentation occurring in the context of his ASD?",
+    options:["Level 3 ASD severity upgrade","Catatonia Associated with Another Mental Disorder","Childhood-Onset Schizophrenia","New-onset Language Disorder"],
+    answer:1,
+    explanation:"Catatonia Associated with Another Mental Disorder (Catatonia specifier) is the correct answer. DSM-5 allows a catatonia specifier to be applied when 3 or more of the 12 catatonic symptoms are present (stupor, catalepsy, waxy flexibility, mutism, negativism, posturing, mannerism, stereotypy, agitation, grimacing, echolalia, echopraxia) in the context of another disorder — including ASD. The acute onset, mutism, odd posturing, waxy flexibility, and echolalia in this case satisfy the criteria for this specifier."
+  }
+];
+
+let current = 0, score = 0, answered = false;
+let userAnswers = [];
+const keys = ['A','B','C','D'];
+
+function init() {
+  current = 0; score = 0; answered = false; userAnswers = [];
+  document.getElementById('totalCount').textContent = questions.length;
+  document.getElementById('ringSub').textContent = 'of ' + questions.length;
+  document.getElementById('quizSection').classList.remove('hidden');
+  document.getElementById('scoreSection').classList.add('hidden');
+  render();
+}
+
+function render() {
+  answered = false;
+  const q = questions[current];
+  const pct = Math.round((current / questions.length) * 100);
+  document.getElementById('fillBar').style.width = pct + '%';
+  document.getElementById('progressText').textContent = (current+1) + ' / ' + questions.length;
+
+  const badge = document.getElementById('qBadge');
+  badge.textContent = q.badge;
+  badge.className = 'badge ' + q.cls;
+
+  document.getElementById('scenarioBox').textContent = q.scenario;
+  document.getElementById('questionText').textContent = q.question;
+
+  const wrap = document.getElementById('optionsWrap');
+  wrap.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const el = document.createElement('div');
+    el.className = 'option';
+    el.id = 'o' + i;
+    el.innerHTML = `<span class="opt-key">${keys[i]}</span><span class="opt-text">${opt}</span>`;
+    el.addEventListener('click', () => choose(i));
+    wrap.appendChild(el);
+  });
+
+  document.getElementById('feedbackBox').className = 'feedback';
+  document.getElementById('nextBtn').classList.add('hidden');
+}
+
+function choose(idx) {
+  if (answered) return;
+  answered = true;
+  const q = questions[current];
+  const correct = idx === q.answer;
+  if (correct) score++;
+  userAnswers.push({ q: q.question, chosen: idx, answer: q.answer, correct, opts: q.options });
+
+  for (let i = 0; i < q.options.length; i++) {
+    const el = document.getElementById('o' + i);
+    el.classList.add('locked');
+    if (i === q.answer) el.classList.add(correct ? 'is-correct' : 'is-reveal');
+    else if (i === idx) el.classList.add('is-wrong');
+  }
+
+  const fb = document.getElementById('feedbackBox');
+  const title = document.getElementById('fbTitle');
+  const body = document.getElementById('fbBody');
+
+  if (correct) {
+    fb.className = 'feedback correct-fb show';
+    title.textContent = '✓ Correct';
+  } else {
+    fb.className = 'feedback wrong-fb show';
+    title.textContent = '✗ Incorrect — Correct answer: ' + q.options[q.answer];
+  }
+  body.textContent = q.explanation;
+  document.getElementById('nextBtn').classList.remove('hidden');
+}
+
+function nextQ() {
+  current++;
+  if (current >= questions.length) showScore();
+  else { render(); window.scrollTo({top:0,behavior:'smooth'}); }
+}
+
+function showScore() {
+  document.getElementById('quizSection').classList.add('hidden');
+  document.getElementById('scoreSection').classList.remove('hidden');
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  const total = questions.length;
+  const pct = Math.round((score / total) * 100);
+  document.getElementById('stCorrect').textContent = score;
+  document.getElementById('stWrong').textContent = total - score;
+  document.getElementById('stPct').textContent = pct + '%';
+  document.getElementById('ringNum').textContent = score + '/' + total;
+
+  let heading, desc, color;
+  if (pct >= 87) {
+    heading = 'Outstanding Performance';
+    desc = 'Excellent command of neurodevelopmental disorders, diagnostic criteria, and assessment tools. This level of mastery reflects clinical readiness.';
+    color = '#4ade80';
+  } else if (pct >= 70) {
+    heading = 'Good Work';
+    desc = 'Solid understanding of the core content with some gaps. Review the explanations for incorrect answers to consolidate your knowledge.';
+    color = '#c8a84b';
+  } else if (pct >= 55) {
+    heading = 'Needs Improvement';
+    desc = 'Basic comprehension is present, but key areas need reinforcement — particularly differential diagnosis, DSM-5 severity levels, and assessment tools.';
+    color = '#fb923c';
+  } else {
+    heading = 'Further Study Required';
+    desc = 'Review the full course material with focus on DSM-5 criteria, ASD severity levels, differential diagnosis, and formal assessment tools.';
+    color = '#f87171';
+  }
+
+  document.getElementById('scoreHeading').textContent = heading;
+  document.getElementById('scoreDesc').textContent = desc;
+  document.getElementById('ringNum').style.color = color;
+
+  const arc = document.getElementById('ringArc');
+  arc.style.stroke = color;
+  const C = 389.6;
+  const offset = C - (pct / 100) * C;
+  setTimeout(() => { arc.style.strokeDashoffset = offset; }, 100);
+
+  const list = document.getElementById('reviewList');
+  list.innerHTML = '';
+  userAnswers.forEach((ua, i) => {
+    const div = document.createElement('div');
+    div.className = 'review-item';
+    div.innerHTML = `
+      <span class="r-dot ${ua.correct ? 'c' : 'w'}"></span>
+      <div class="r-body">
+        <div class="r-q"><strong>Q${i+1}:</strong> ${ua.q}</div>
+        <div class="r-ans">
+          ${ua.correct
+            ? `<span class="r-correct-txt">Your answer: ${ua.opts[ua.chosen]}</span>`
+            : `<span class="r-wrong-txt">Your answer: ${ua.opts[ua.chosen]}</span>
+               <span class="r-sep">|</span>
+               <span class="r-correct-txt">Correct: ${ua.opts[ua.answer]}</span>`
+          }
+        </div>
+      </div>`;
+    list.appendChild(div);
+  });
+}
+
+function restartQuiz() { init(); }
+init();
+</script>
+</body>
+</html>
